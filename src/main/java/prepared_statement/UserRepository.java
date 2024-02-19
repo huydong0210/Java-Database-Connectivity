@@ -3,6 +3,8 @@ package prepared_statement;
 import entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import prepared_statement.common.AbstractDAO;
+import prepared_statement.common.MyMapper;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,9 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-
-public class UserRepository {
+public class UserRepository extends AbstractDAO<User> implements IUserRepository{
     private static final Logger logger = LoggerFactory.getLogger(UserRepository.class);
     private Utils utils;
     private static UserRepository instance;
@@ -28,7 +28,7 @@ public class UserRepository {
         this.utils = Utils.getInstance();
     }
 
-    public List<User> findAll() {
+    public List<User> findAllV1() {
         logger.info("find all users");
         StringBuilder sql = new StringBuilder("select * from user");
         List<User> userList = new ArrayList<>();
@@ -69,6 +69,18 @@ public class UserRepository {
         }
 
         return userList;
+    }
+
+    @Override
+    public List<User> findAll() {
+        String sql = "select * from user";
+        return query(sql, MyMapper.getInstance());
+    }
+
+    @Override
+    public List<User> findById(Long id) {
+        String sql = "select * from user where id  = ?";
+        return query(sql, MyMapper.getInstance(), id);
     }
 
 

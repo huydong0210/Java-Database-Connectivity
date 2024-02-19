@@ -9,6 +9,7 @@ public class Test {
     public static void main(String[] args) {
         userRepository = UserRepository.getInstance();
         List<User> userList = userRepository.findAll();
-        System.out.println(userList.size());
+//        System.out.println(userList.toString());
+        System.out.println(userRepository.findById(1L));
     }
 }
